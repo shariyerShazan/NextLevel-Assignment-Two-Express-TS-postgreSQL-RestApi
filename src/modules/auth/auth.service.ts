@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { pool } from "../../utils/db.js";
 import type { RegisterUserDto } from "./dto/register-user-dto.js";
+import type { LoginUserDto } from "./dto/login-user-dto.js";
 
 export class AuthServices {
   static async register(dto: RegisterUserDto) {
@@ -21,4 +22,21 @@ export class AuthServices {
 
     return user.rows[0];
   }
+
+  static async login(dto: LoginUserDto){
+        const user = (
+          await pool.query(
+            "SELECT id, password, name, email, role FROM users WHERE email = $1",
+            [dto.email]
+          )
+        ).rows[0];
+        if (!user) {
+          throw new Error("User not found with this email!");
+        }
+        const isMatchedPass = await bcrypt.compare(dto.password, user.password);
+        if (!isMatchedPass) {
+          throw new Error("Wrong password! Please try again.");
+        }
+        return user;
+      }
 }

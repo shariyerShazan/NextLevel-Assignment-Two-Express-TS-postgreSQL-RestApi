@@ -1,6 +1,7 @@
 import express, { type Request, type Response } from "express"
 import cors from "cors"
 import dotenv from "dotenv"
+import cookieParser from "cookie-parser"
 import { initDB } from "./utils/db.js"
 dotenv.config()
 import AuthRouter from "./modules/auth/auth.routes.js"
@@ -14,7 +15,7 @@ app.use(cors({
     origin: ["http://localhost:3000", "http://localhost:5173"] ,
     credentials: true
 }))
-// app.use()
+app.use(cookieParser())
 
 
 // Home routes

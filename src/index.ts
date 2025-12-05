@@ -3,6 +3,7 @@ import cors from "cors"
 import dotenv from "dotenv"
 import { initDB } from "./utils/db.js"
 dotenv.config()
+import AuthRouter from "./modules/auth/auth.routes.js"
 
 const app = express()
 
@@ -32,6 +33,8 @@ app.get("/" , (req: Request , res: Response)=> {
     }
 })
 
+// api here
+app.use("/api/v1/auth" , AuthRouter)
 
 
 // server listen

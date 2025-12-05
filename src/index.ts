@@ -1,7 +1,11 @@
 import express, { type Request, type Response } from "express"
 import cors from "cors"
 import dotenv from "dotenv"
+import cookieParser from "cookie-parser"
+import { initDB } from "./utils/db.js"
 dotenv.config()
+import AuthRouter from "./modules/auth/auth.routes.js"
+import UserRouter from "./modules/user/user.routes.js"
 
 const app = express()
 
@@ -12,7 +16,7 @@ app.use(cors({
     origin: ["http://localhost:3000", "http://localhost:5173"] ,
     credentials: true
 }))
-// app.use()
+app.use(cookieParser())
 
 
 // Home routes
@@ -31,12 +35,16 @@ app.get("/" , (req: Request , res: Response)=> {
     }
 })
 
+// api here
+app.use("/api/v1/auth" , AuthRouter)
+app.use("/api/v1/users" , UserRouter)
 
 
 // server listen
 const PORT = process.env.PORT || 3333
 const runServer = async ()=> {
     try {
+        await initDB()
         app.listen(PORT , ()=> {
             console.log(`Server is running at http://localhost:${PORT}`)
         })

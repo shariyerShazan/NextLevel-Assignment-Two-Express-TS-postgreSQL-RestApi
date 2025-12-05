@@ -16,7 +16,6 @@ export const validate = (schema: ZodSchema) => (req: Request, res: Response, nex
             errors,
         });
     }
-    
     req.body = result.data;
     next();
 };

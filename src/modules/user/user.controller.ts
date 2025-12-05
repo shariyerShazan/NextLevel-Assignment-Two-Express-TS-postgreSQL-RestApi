@@ -1,6 +1,8 @@
 import type { Response, Request } from "express";
 import type { AuthRequest } from "../../middlewares/isAuthed.js";
 import { UserServices } from "./user.service.js";
+import type { UpdateUserDto } from "./dto/update-user-dto.js";
+import { success } from "zod";
 
 interface Params {
     userId: string;
@@ -50,6 +52,31 @@ export class UserController {
                 success: true,
             });
 
+        } catch (error: any) {
+            console.log(error);
+            const statusCode = error.message === "User not found!" ? 404 : 500;
+            return res.status(statusCode).json({
+                message: error.message || "Internal server error!",
+                success: false
+            });
+        }
+    }
+
+    static updateUser  = async (req: AuthRequest , res : Response)=> {
+        try {
+            const dto : UpdateUserDto = req.body
+            const user = await UserServices.update(Number(req.userId) ,dto)
+            if(!user){
+                return res.status(400).json({
+                    message : "User not found!",
+                    success: false
+                })
+            }
+            return res.status(200).json({
+                message : "User updated successfully!" ,
+                success: true ,
+                user
+            })
         } catch (error: any) {
             console.log(error);
             const statusCode = error.message === "User not found!" ? 404 : 500;

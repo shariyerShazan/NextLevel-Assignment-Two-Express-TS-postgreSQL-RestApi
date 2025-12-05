@@ -43,8 +43,8 @@ export class UserServices{
           `UPDATE users
            SET name = $1,
                email = $2,
-               phone = $3,
-           WHERE id = $5
+               phone = $3
+           WHERE id = $4
            RETURNING id, name, email, phone, role`,
           [dto.name, dto.email, dto.phone, userId]
         );

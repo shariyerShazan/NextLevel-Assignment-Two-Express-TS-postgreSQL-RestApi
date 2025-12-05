@@ -50,7 +50,7 @@ export const initDB = async () => {
       );
     `);
 
-    console.log("📦 All tables created successfully!");
+    console.log("All tables created successfully!");
   } catch (err) {
     console.error("Database init error:", err);
   }

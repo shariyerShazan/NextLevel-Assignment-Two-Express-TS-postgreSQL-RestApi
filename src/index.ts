@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser"
 import { initDB } from "./utils/db.js"
 dotenv.config()
 import AuthRouter from "./modules/auth/auth.routes.js"
+import UserRouter from "./modules/user/user.routes.js"
 
 const app = express()
 
@@ -36,6 +37,7 @@ app.get("/" , (req: Request , res: Response)=> {
 
 // api here
 app.use("/api/v1/auth" , AuthRouter)
+app.use("/api/v1/users" , UserRouter)
 
 
 // server listen

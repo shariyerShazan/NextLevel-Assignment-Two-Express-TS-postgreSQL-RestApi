@@ -14,10 +14,10 @@ export class AuthServices {
       throw new Error("Email already exists");
     }
     const user = await pool.query(
-      `INSERT INTO users(name,email,password,phone,role)
-       VALUES($1,$2,$3,$4,$5)
-       RETURNING id, name, email`,
-      [dto.name, dto.email, hashed, dto.phone, dto.role]
+        `INSERT INTO users(name, email, password, phone, role)
+         VALUES($1, $2, $3, $4, $5)
+         RETURNING id, name, email, phone, role`,
+        [dto.name, dto.email, hashed, dto.phone, 'customer'] // Explicitly pass 'customer'
     );
 
     return user.rows[0];

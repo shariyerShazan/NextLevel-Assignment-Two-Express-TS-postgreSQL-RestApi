@@ -5,7 +5,7 @@ export const RegisterUserSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   phone: z.string(),
-  role: z.enum(["admin", "customer"])
+  // role: z.enum(["admin", "customer"])
 });
 
 export type RegisterUserDto = z.infer<typeof RegisterUserSchema>;

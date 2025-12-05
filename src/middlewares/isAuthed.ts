@@ -3,8 +3,10 @@ import jwt, { type JwtPayload } from "jsonwebtoken"
 import dotenv from "dotenv"
 dotenv.config()
 
+export type Role = "admin" | "customer"
 export interface AuthRequest extends Request {
     userId?: string;
+    Role? : Role
   }
 
 export const isAuthed = (req: AuthRequest , res: Response , next : NextFunction)=> {
@@ -24,6 +26,8 @@ export const isAuthed = (req: AuthRequest , res: Response , next : NextFunction)
             })
         }
         req.userId = decode.userId
+        req.Role = decode.role
+        next()
     } catch (error) {
         console.log(error)
         return res.status(500).json({

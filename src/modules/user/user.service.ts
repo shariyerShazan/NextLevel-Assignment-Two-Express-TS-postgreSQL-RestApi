@@ -3,23 +3,31 @@ import type { UpdateUserDto } from "./dto/update-user-dto.js";
 
 export class UserServices{
     static async findAll() {
-        const result = await pool.query(`
-          SELECT id, name, email, phone, role 
-          FROM users
-        `);
-        if(result.rows.length === 0){
-            throw Error("No user found!")
+        try {
+            console.log('Executing query...'); 
+            const result = await pool.query(`
+                SELECT id, name, email, phone, role 
+                FROM users
+            `);
+            console.log('Query result:', result.rows.length); 
+            
+            if(result.rows.length === 0){
+                throw new Error("No user found!");
+            }
+            return result.rows;
+        } catch (error) {
+            console.error('Error in UserServices.findAll:', error);
+            throw error;
         }
-        return result.rows;
-      }
+    }
 
       static async delete(userId: number) {
-        const existing = await pool.query("SELECT id FROM users WHERE id = $1", [userId]);
-        if (existing.rows.length === 0) {
-          throw new Error("User not found!");
-        }
-        await pool.query("DELETE FROM users WHERE id = $1", [userId]);
-        return true;
+            const existing = await pool.query("SELECT id FROM users WHERE id = $1", [userId]);
+            if (existing.rows.length === 0) {
+            throw new Error("User not found!");
+            }
+            await pool.query("DELETE FROM users WHERE id = $1", [userId]);
+            return true;
       }
 
 
@@ -33,12 +41,10 @@ export class UserServices{
            SET name = $1,
                email = $2,
                phone = $3,
-               role = $4
            WHERE id = $5
            RETURNING id, name, email, phone, role`,
-          [dto.name, dto.email, dto.phone, dto.role, userId]
+          [dto.name, dto.email, dto.phone, userId]
         );
-    
         return updated.rows[0];
       }
 }

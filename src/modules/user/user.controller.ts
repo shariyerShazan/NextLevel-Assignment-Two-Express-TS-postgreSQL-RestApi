@@ -2,11 +2,8 @@ import type { Response, Request } from "express";
 import type { AuthRequest } from "../../middlewares/isAuthed.js";
 import { UserServices } from "./user.service.js";
 import type { UpdateUserDto } from "./dto/update-user-dto.js";
-import { success } from "zod";
 
-interface Params {
-    userId: string;
-}
+
 
 export class UserController {
     static getUsers = async (req: AuthRequest, res: Response) => { 

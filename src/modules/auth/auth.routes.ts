@@ -39,10 +39,6 @@ const router = Router();
  *               phone:
  *                 type: string
  *                 example: "01712345678"
- *               role:
- *                 type: string
- *                 enum: [admin, customer]
- *                 example: "customer"
  *     responses:
  *       200:
  *         description: User registered successfully
@@ -91,9 +87,8 @@ router.post("/signup", validate(RegisterUserSchema) , AuthController.registerUse
  *         content:
  *           application/json:
  *             example:
- *               message: "User logged in successfully!"
+ *               message: "Welcome back!"
  *               success: true
- *               token: "jwt_token_here"
  *       400:
  *         description: Invalid credentials
  *       500:

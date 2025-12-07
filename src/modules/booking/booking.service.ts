@@ -82,6 +82,10 @@ export class BookingServices {
       throw new Error("You cannot cancel after the start date!");
     }
 
+    if(booking.status === "returned"){
+        throw Error("Vehicle status already returned. You can't change returned status!")
+    }
+
     await pool.query(
       `UPDATE bookings SET status = 'cancelled' WHERE id = $1`,
       [bookingId]
@@ -109,6 +113,9 @@ export class BookingServices {
 
     const booking = result.rows[0];
 
+  if(booking.status === "cancelled"){
+        throw Error("Vehicle status already cancelled. You can't change cancelled status!")
+    }
     await pool.query(
       `UPDATE bookings SET status = 'returned' WHERE id = $1`,
       [bookingId]

@@ -192,7 +192,7 @@ router.get("/:vehicleId" , VehicleController.getOneVehicle)
  *                 daily_rent_price: 60
  *                 availability_status: "available"
  */
-router.put("/:vehicleId"  , validate(UpdateVehicleSchema), isAuthed ,authorize(["admin"])  , VehicleController.updateVehicle )
+router.put("/:vehicleId"  , validate(UpdateVehicleSchema), isAuthed , authorize(["admin"])  , VehicleController.updateVehicle )
 
 
 /**

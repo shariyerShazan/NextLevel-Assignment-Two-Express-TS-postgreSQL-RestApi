@@ -13,7 +13,7 @@ export const validate = (schema: ZodSchema) => (req: Request, res: Response, nex
 
         return res.status(400).json({
             success: false,
-            errors,
+            errors
         });
     }
     req.body = result.data;

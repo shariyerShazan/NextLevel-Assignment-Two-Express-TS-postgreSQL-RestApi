@@ -88,19 +88,12 @@ router.delete("/:userId" , isAuthed , authorize(["admin"]) , UserController.dele
 
 /**
  * @swagger
- * /api/v1/users/{userId}:
+ * /api/v1/users/:
  *   put:
  *     summary: Update a user by ID (admin or the user themselves)
  *     tags: [Users]
  *     security:
  *       - cookieAuth: []
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         schema:
- *           type: string
- *         example: "1"
  *     requestBody:
  *       required: true
  *       content:
@@ -144,6 +137,6 @@ router.delete("/:userId" , isAuthed , authorize(["admin"]) , UserController.dele
  *       500:
  *         description: Internal server error
  */
-router.put("/:userId" , validate(UpdateUserSchema), isAuthed , authorize(["admin" , "customer"]) , UserController.updateUser)
+router.put("/" , validate(UpdateUserSchema), isAuthed , authorize(["admin" , "customer"]) , UserController.updateUser)
 
 export default router

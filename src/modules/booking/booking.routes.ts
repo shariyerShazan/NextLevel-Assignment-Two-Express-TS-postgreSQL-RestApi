@@ -35,14 +35,11 @@ const router = Router()
  *               rent_start_date:
  *                 type: string
  *                 format: date
- *                 example: "2025-12-10"
+ *                 example: "2025-12-15"
  *               rent_end_date:
  *                 type: string
  *                 format: date
- *                 example: "2025-12-15"
- *               total_price:
- *                 type: number
- *                 example: 250
+ *                 example: "2025-12-30"
  *     responses:
  *       200:
  *         description: Booking created successfully
@@ -55,8 +52,8 @@ const router = Router()
  *                 id: 1
  *                 customer_id: 2
  *                 vehicle_id: 1
- *                 rent_start_date: "2025-12-10"
- *                 rent_end_date: "2025-12-15"
+ *                 rent_start_date: "2025-12-15"
+ *                 rent_end_date: "2025-12-30"
  *                 total_price: 250
  *                 status: "active"
  *       400:
@@ -89,15 +86,15 @@ router.post("/" , isAuthed, validate(CreateBookingSchema) , BookingController.cr
  *                 - id: 1
  *                   customer_id: 2
  *                   vehicle_id: 1
- *                   rent_start_date: "2025-12-10"
- *                   rent_end_date: "2025-12-15"
+ *                   rent_start_date: "2025-12-15"
+ *                   rent_end_date: "2025-12-30"
  *                   total_price: 250
  *                   status: "active"
  *                 - id: 2
  *                   customer_id: 2
  *                   vehicle_id: 3
- *                   rent_start_date: "2025-12-20"
- *                   rent_end_date: "2025-12-22"
+ *                   rent_start_date: "2025-12-15"
+ *                   rent_end_date: "2025-12-30"
  *                   total_price: 120
  *                   status: "cancelled"
  */
@@ -109,7 +106,7 @@ router.get("/" , isAuthed, BookingController.getBookings)
  * @swagger
  * /api/v1/bookings/{bookingId}:
  *   put:
- *     summary: Update booking status (admin or customer)
+ *     summary: Update booking status (admin can update status ="returned" or customer can update status ="cancelled")
  *     tags: [Bookings]
  *     security:
  *       - cookieAuth: []
@@ -120,17 +117,6 @@ router.get("/" , isAuthed, BookingController.getBookings)
  *         schema:
  *           type: string
  *         example: "1"
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               status:
- *                 type: string
- *                 enum: [active, cancelled, returned]
- *                 example: "returned"
  *     responses:
  *       200:
  *         description: Booking status updated successfully
@@ -139,14 +125,7 @@ router.get("/" , isAuthed, BookingController.getBookings)
  *             example:
  *               message: "Booking status updated!"
  *               success: true
- *               booking:
- *                 id: 1
- *                 customer_id: 2
- *                 vehicle_id: 1
- *                 rent_start_date: "2025-12-10"
- *                 rent_end_date: "2025-12-15"
- *                 total_price: 250
- *                 status: "returned"
+
  *       400:
  *         description: Cannot update booking
  *       401:

@@ -24,9 +24,7 @@ app.use(cors({
     credentials: true
 }))
 app.use(cookieParser())
-// swagger middleware
-// const basePath = process.env.BASE_PATH || "";
-// app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
     explorer: true,
     customSiteTitle: "Vehicle Rental API Documentation",

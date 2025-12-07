@@ -2,7 +2,6 @@ import swaggerJsdoc from "swagger-jsdoc";
 import path from "path";
 import { fileURLToPath } from "url";
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -16,12 +15,32 @@ const options = {
     },
     servers: [
       {
-        url: ["http://localhost:3333" , ""],
+        url: "https://2-assignment-amber.vercel.app",
+        description: "Production server",
+      },
+      {
+        url: "http://localhost:3333",
+        description: "Local server",
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [{ bearerAuth: [] }],
   },
 
-  apis: [path.join(__dirname, "../modules/**/*.ts")],
+  // ---- THIS IS THE FIX ----
+  apis: [
+    path.join(__dirname, "../modules/**/*.ts"), // For local dev
+    path.join(__dirname, "../modules/**/*.js"), // For compiled Vercel runtime
+    "modules/**/*.js" // Another fallback path for compiled files
+  ],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);

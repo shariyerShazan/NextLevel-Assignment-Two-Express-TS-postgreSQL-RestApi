@@ -9,12 +9,13 @@ import UserRouter from "./modules/user/user.routes.js"
 import VehicleRouter from "./modules/vehicle/vehicle.route.js"
 import BookingRouter from "./modules/booking/booking.routes.js"
 import swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "./utils/swagger.js";
+import { swaggerSpec } from "./utils/swagger.js"
+
 
 
 const app = express()
 
-// middlewares
+// middlewares 
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
 app.use(cors({
@@ -23,7 +24,15 @@ app.use(cors({
 }))
 app.use(cookieParser())
 // swagger middleware
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// const basePath = process.env.BASE_PATH || "";
+// app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    explorer: true,
+    customSiteTitle: "Vehicle Rental API Documentation",
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  }))
 
 // Home routes
 app.get("/" , (req: Request , res: Response)=> {
@@ -46,6 +55,8 @@ app.use("/api/v1/auth" , AuthRouter)
 app.use("/api/v1/users" , UserRouter)
 app.use("/api/v1/vehicles" , VehicleRouter)
 app.use("/api/v1/bookings" , BookingRouter)
+// 404 handler
+
 
 // server listen
 const PORT = process.env.PORT || 3333

@@ -48,17 +48,61 @@ export class BookingServices {
 
 
   static async findAll(role: string, userId: number) {
-    let query = "SELECT * FROM bookings";
-
+    let query = `
+      SELECT 
+        b.id as booking_id,
+        b.rent_start_date,
+        b.rent_end_date,
+        b.total_price,
+        b.status,
+        v.id as vehicle_id,
+        v.vehicle_name,
+        v.type as vehicle_type,
+        v.registration_number,
+        v.daily_rent_price,
+        v.availability_status,
+        u.id as customer_id,
+        u.name as customer_name,
+        u.email as customer_email,
+        u.phone as customer_phone
+      FROM bookings b
+      JOIN vehicles v ON b.vehicle_id = v.id
+      JOIN users u ON b.customer_id = u.id
+    `;
+  
+    const params: any[] = [];
+  
     if (role !== "admin") {
-      query = "SELECT * FROM bookings WHERE customer_id = $1";
-      const result = await pool.query(query, [userId]);
-      return result.rows;
+      query += ` WHERE b.customer_id = $1`;
+      params.push(userId);
     }
-
-    const result = await pool.query(query);
-    return result.rows;
+  
+    const result = await pool.query(query, params);
+  
+    // map to nested structure
+    return result.rows.map(row => ({
+      booking_id: row.booking_id,
+      rent_start_date: row.rent_start_date,
+      rent_end_date: row.rent_end_date,
+      total_price: row.total_price,
+      status: row.status,
+      vehicle: {
+        id: row.vehicle_id,
+        vehicle_name: row.vehicle_name,
+        type: row.vehicle_type,
+        registration_number: row.registration_number,
+        daily_rent_price: row.daily_rent_price,
+        availability_status: row.availability_status
+      },
+      customer: {
+        id: row.customer_id,
+        name: row.customer_name,
+        email: row.customer_email,
+        phone: row.customer_phone
+      }
+    }));
   }
+  
 
 
   static async cancel(bookingId: number, userId: number) {

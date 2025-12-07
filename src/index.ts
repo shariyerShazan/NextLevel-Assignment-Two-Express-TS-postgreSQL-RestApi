@@ -6,6 +6,11 @@ import { initDB } from "./utils/db.js"
 dotenv.config()
 import AuthRouter from "./modules/auth/auth.routes.js"
 import UserRouter from "./modules/user/user.routes.js"
+import VehicleRouter from "./modules/vehicle/vehicle.route.js"
+import BookingRouter from "./modules/booking/booking.routes.js"
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./utils/swagger.js";
+
 
 const app = express()
 
@@ -17,7 +22,8 @@ app.use(cors({
     credentials: true
 }))
 app.use(cookieParser())
-
+// swagger middleware
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Home routes
 app.get("/" , (req: Request , res: Response)=> {
@@ -38,7 +44,8 @@ app.get("/" , (req: Request , res: Response)=> {
 // api here
 app.use("/api/v1/auth" , AuthRouter)
 app.use("/api/v1/users" , UserRouter)
-
+app.use("/api/v1/vehicles" , VehicleRouter)
+app.use("/api/v1/bookings" , BookingRouter)
 
 // server listen
 const PORT = process.env.PORT || 3333

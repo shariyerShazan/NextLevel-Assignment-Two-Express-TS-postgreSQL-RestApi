@@ -31,7 +31,6 @@ export class BookingServices {
 
     const total_price = diffrenceDays * v.daily_rent_price;
 
-    // Insert booking
     const booking = await pool.query(
       `INSERT INTO bookings(customer_id, vehicle_id, rent_start_date, rent_end_date, total_price, status)
        VALUES($1,$2,$3,$4,$5,'active')
@@ -39,7 +38,6 @@ export class BookingServices {
       [customerId, dto.vehicle_id, dto.rent_start_date, dto.rent_end_date, total_price]
     );
 
-    // Update vehicle status
     await pool.query(
       `UPDATE vehicles SET availability_status = 'booked' WHERE id = $1`,
       [dto.vehicle_id]

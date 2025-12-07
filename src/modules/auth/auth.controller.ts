@@ -13,7 +13,7 @@ export class AuthController {
             const dto: RegisterUserDto = req.body;
             const user = await AuthServices.register(dto);
             return res.status(201).json({
-              message: "User created successfully!",
+              message: "User created successfully! Login please.",
               success: true,
               data: user
             });

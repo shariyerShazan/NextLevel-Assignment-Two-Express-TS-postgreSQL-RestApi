@@ -18,7 +18,7 @@ const router = Router();
  * @swagger
  * /api/v1/auth/signup:
  *   post:
- *     summary: Register a new user
+ *     summary: Register a new user as customer
  *     tags: [Auth]
  *     requestBody:
  *       required: true

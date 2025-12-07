@@ -90,7 +90,7 @@ router.delete("/:userId" , isAuthed , authorize(["admin"]) , UserController.dele
  * @swagger
  * /api/v1/users/{userId}:
  *   put:
- *     summary: Update a user by ID (admin or the user themselves)
+ *     summary: Update a user by ID (admin can update any user's role and own details.. and user can only update own details without role)
  *     tags: [Users]
  *     security:
  *       - cookieAuth: []

@@ -44,12 +44,11 @@ export class UserServices{
         if (role === "admin" && dto.role) {
           updated = await pool.query(
             `UPDATE users
-             SET name = $1,
-                 phone = $2,
-                 role = $3
-             WHERE id = $4
+             SET 
+                 role = $1
+             WHERE id = $2
              RETURNING id, name, email, phone, role`,
-            [dto.name, dto.phone, dto.role, userId]
+            [dto.role, userId]
           );
         } else {
           updated = await pool.query(

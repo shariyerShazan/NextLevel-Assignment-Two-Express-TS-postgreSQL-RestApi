@@ -21,7 +21,7 @@ const router = Router()
  * @swagger
  * /api/v1/vehicles/:
  *   post:
- *     summary: Create a new vehicle
+ *     summary: Create a new vehicle (Admin only)
  *     tags: [Vehicles]
  *     security:
  *       - cookieAuth: []
@@ -141,7 +141,7 @@ router.get("/:vehicleId" , VehicleController.getOneVehicle)
  * @swagger
  * /api/v1/vehicles/{vehicleId}:
  *   put:
- *     summary: Update a vehicle by ID
+ *     summary: Update a vehicle by ID (Admin only)
  *     tags: [Vehicles]
  *     security:
  *       - cookieAuth: []
@@ -199,7 +199,7 @@ router.put("/:vehicleId"  , validate(UpdateVehicleSchema), isAuthed , authorize(
  * @swagger
  * /api/v1/vehicles/{vehicleId}:
  *   delete:
- *     summary: Delete a vehicle by ID
+ *     summary: Delete a vehicle by ID (Admin only)
  *     tags: [Vehicles]
  *     security:
  *       - cookieAuth: []

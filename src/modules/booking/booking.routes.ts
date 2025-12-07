@@ -70,7 +70,7 @@ router.post("/" , isAuthed, validate(CreateBookingSchema) , BookingController.cr
  * @swagger
  * /api/v1/bookings/:
  *   get:
- *     summary: Get all bookings for the authenticated user
+ *     summary: Get all bookings for the authenticated user (Admin get all the booking. and customer only get his bookked list!)
  *     tags: [Bookings]
  *     security:
  *       - cookieAuth: []
@@ -106,7 +106,7 @@ router.get("/" , isAuthed, BookingController.getBookings)
  * @swagger
  * /api/v1/bookings/{bookingId}:
  *   put:
- *     summary: Update booking status (admin can update status ="returned" or customer can update status ="cancelled")
+ *     summary: Update booking status (admin can update status ="returned" or customer can update status ="cancelled") {Addmin can't change when status="cancelled", and Customer can't change or cancel booking When status ="returned" }
  *     tags: [Bookings]
  *     security:
  *       - cookieAuth: []

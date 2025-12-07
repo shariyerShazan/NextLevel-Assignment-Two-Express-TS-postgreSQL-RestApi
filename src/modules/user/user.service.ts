@@ -34,20 +34,35 @@ export class UserServices{
       
 
 
-      static async update(userId: number, dto: UpdateUserDto) {
-        const existing = await pool.query("SELECT id FROM users WHERE id = $1", [userId]);
+      static async update(userId: number, dto: UpdateUserDto, role: string) {
+        const existing = await pool.query("SELECT * FROM users WHERE id = $1", [userId]);
         if (existing.rows.length === 0) {
           throw new Error("User not found");
         }
-        const updated = await pool.query(
-          `UPDATE users
-           SET name = $1,
-               email = $2,
-               phone = $3
-           WHERE id = $4
-           RETURNING id, name, email, phone, role`,
-          [dto.name, dto.email, dto.phone, userId]
-        );
+      
+        let updated;
+        if (role === "admin" && dto.role) {
+          updated = await pool.query(
+            `UPDATE users
+             SET name = $1,
+                 phone = $2,
+                 role = $3
+             WHERE id = $4
+             RETURNING id, name, email, phone, role`,
+            [dto.name, dto.phone, dto.role, userId]
+          );
+        } else {
+          updated = await pool.query(
+            `UPDATE users
+             SET name = $1,
+                 phone = $2
+             WHERE id = $3
+             RETURNING id, name, email, phone, role`,
+            [dto.name, dto.phone, userId]
+          );
+        }
+      
         return updated.rows[0];
       }
+      
 }

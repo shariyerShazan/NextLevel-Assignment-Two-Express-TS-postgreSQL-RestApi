@@ -88,12 +88,19 @@ router.delete("/:userId" , isAuthed , authorize(["admin"]) , UserController.dele
 
 /**
  * @swagger
- * /api/v1/users/:
+ * /api/v1/users/{userId}:
  *   put:
  *     summary: Update a user by ID (admin or the user themselves)
  *     tags: [Users]
  *     security:
  *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         example: "1"
  *     requestBody:
  *       required: true
  *       content:
@@ -104,9 +111,6 @@ router.delete("/:userId" , isAuthed , authorize(["admin"]) , UserController.dele
  *               name:
  *                 type: string
  *                 example: "John Doe"
- *               email:
- *                 type: string
- *                 example: "john@example.com"
  *               phone:
  *                 type: string
  *                 example: "0123456789"
@@ -114,6 +118,10 @@ router.delete("/:userId" , isAuthed , authorize(["admin"]) , UserController.dele
  *                 type: string
  *                 enum: [admin, customer]
  *                 example: "customer"
+ *             required:
+ *               - name
+ *               - email
+ *               - phone
  *     responses:
  *       200:
  *         description: User updated successfully
@@ -130,13 +138,42 @@ router.delete("/:userId" , isAuthed , authorize(["admin"]) , UserController.dele
  *                 role: "customer"
  *       400:
  *         description: Validation error
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               errors:
+ *                 - path: "email"
+ *                   message: "Invalid email address"
  *       401:
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: "Unauthorized"
+ *       403:
+ *         description: Forbidden (customer trying to update another user)
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: "Forbidden: Cannot update other user's profile"
  *       404:
  *         description: User not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: "User not found!"
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: "Internal server error!"
  */
-router.put("/" , validate(UpdateUserSchema), isAuthed , authorize(["admin" , "customer"]) , UserController.updateUser)
+router.put("/:userId" , validate(UpdateUserSchema), isAuthed , authorize(["admin" , "customer"]) , UserController.updateUser)
 
 export default router

@@ -59,28 +59,39 @@ export class UserController {
         }
     }
 
-    static updateUser  = async (req: AuthRequest , res : Response)=> {
-        try {
-            const dto : UpdateUserDto = req.body
-            const user = await UserServices.update(Number(req.userId) ,dto)
-            if(!user){
-                return res.status(400).json({
-                    message : "User not found!",
-                    success: false
-                })
-            }
-            return res.status(200).json({
-                message : "User updated successfully!" ,
-                success: true ,
-                user
-            })
-        } catch (error: any) {
-            console.log(error);
-            const statusCode = error.message === "User not found!" ? 404 : 500;
-            return res.status(statusCode).json({
-                message: error.message || "Internal server error!",
-                success: false
-            });
-        }
+    // Controller
+static updateUser = async (req: AuthRequest, res: Response) => {
+    try {
+      const dto: UpdateUserDto = req.body;
+      const userIdFromParam = Number(req.params.userId);
+
+      if (req.Role === "customer" && Number(req.userId) !== userIdFromParam) {
+        return res.status(403).json({
+          message: "Forbidden: Cannot update other user's profile",
+          success: false,
+        });
+      }
+  
+      const user = await UserServices.update(userIdFromParam, dto, req.Role as string);
+      if (!user) {
+        return res.status(404).json({
+          message: "User not found!",
+          success: false,
+        });
+      }
+  
+      return res.status(200).json({
+        message: "User updated successfully!",
+        success: true,
+        user,
+      });
+    } catch (error: any) {
+      console.log(error);
+      return res.status(500).json({
+        message: error.message || "Internal server error!",
+        success: false,
+      });
     }
+  };
+  
 }

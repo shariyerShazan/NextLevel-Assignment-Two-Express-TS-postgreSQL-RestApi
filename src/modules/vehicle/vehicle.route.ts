@@ -71,6 +71,8 @@ const router = Router()
  *       500:
  *         description: Internal server error
  */
+router.post("/" , validate(PostVehicleSchema), isAuthed, authorize(["admin"]) ,VehicleController.PostVehicle)
+
 
 /**
  * @swagger
@@ -100,6 +102,8 @@ const router = Router()
  *                   daily_rent_price: 60
  *                   availability_status: "booked"
  */
+router.get("/" , VehicleController.getAllVehicles)
+
 
 /**
  * @swagger
@@ -130,6 +134,8 @@ const router = Router()
  *                 daily_rent_price: 50
  *                 availability_status: "available"
  */
+router.get("/:vehicleId" , VehicleController.getOneVehicle)
+
 
 /**
  * @swagger
@@ -186,6 +192,8 @@ const router = Router()
  *                 daily_rent_price: 60
  *                 availability_status: "available"
  */
+router.put("/:vehicleId"  , validate(UpdateVehicleSchema), isAuthed ,authorize(["admin"])  , VehicleController.updateVehicle )
+
 
 /**
  * @swagger
@@ -219,13 +227,6 @@ const router = Router()
  *       500:
  *         description: Internal server error
  */
-
-
-
-router.post("/" , validate(PostVehicleSchema), isAuthed, authorize(["admin"]) ,VehicleController.PostVehicle)
-router.get("/" , VehicleController.getAllVehicles)
-router.get("/:vehicleId" , VehicleController.getOneVehicle)
-router.put("/:vehicleId"  , validate(UpdateVehicleSchema), isAuthed ,authorize(["admin"])  , VehicleController.updateVehicle )
 router.delete("/:vehicleId" , isAuthed , authorize(["admin"]) , VehicleController.deleteVehicle)
 
 export default router

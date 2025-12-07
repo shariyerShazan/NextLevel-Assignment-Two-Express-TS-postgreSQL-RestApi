@@ -16,7 +16,7 @@ const router = Router();
 
 /**
  * @swagger
- * /signup:
+ * /api/v1/auth/signup:
  *   post:
  *     summary: Register a new user
  *     tags: [Auth]
@@ -63,9 +63,12 @@ const router = Router();
  *         description: Internal server error
  */
 
+router.post("/signup", validate(RegisterUserSchema) , AuthController.registerUser);
+
+
 /**
  * @swagger
- * /signin:
+ * /api/v1/auth/signin:
  *   post:
  *     summary: Login a user
  *     tags: [Auth]
@@ -97,9 +100,6 @@ const router = Router();
  *         description: Internal server error
  */
 
-
-
-router.post("/signup", validate(RegisterUserSchema) , AuthController.registerUser);
 router.post("/signin", validate(LoginUserSchema) , AuthController.loginUser);
 
 export default router

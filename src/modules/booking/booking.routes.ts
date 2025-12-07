@@ -66,6 +66,8 @@ const router = Router()
  *       500:
  *         description: Internal server error
  */
+router.post("/" , isAuthed, validate(CreateBookingSchema) , BookingController.createBooking)
+
 
 /**
  * @swagger
@@ -99,6 +101,9 @@ const router = Router()
  *                   total_price: 120
  *                   status: "cancelled"
  */
+router.get("/" , isAuthed, BookingController.getBookings)
+
+
 
 /**
  * @swagger
@@ -151,9 +156,6 @@ const router = Router()
  *       500:
  *         description: Internal server error
  */
-
-router.post("/" , isAuthed, validate(CreateBookingSchema) , BookingController.createBooking)
-router.get("/" , isAuthed, BookingController.getBookings)
 router.put("/:bookingId" , isAuthed , BookingController.updateBookingStatus)
 
 export default router

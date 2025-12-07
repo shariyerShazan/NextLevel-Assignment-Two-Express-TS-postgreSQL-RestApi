@@ -48,6 +48,8 @@ const router = Router()
  *       500:
  *         description: Internal server error
  */
+router.get("/" , isAuthed , authorize(["admin"]) , UserController.getUsers)
+
 
 /**
  * @swagger
@@ -81,6 +83,8 @@ const router = Router()
  *       500:
  *         description: Internal server error
  */
+router.delete("/:userId" , isAuthed , authorize(["admin"]) , UserController.deleteCustomer)
+
 
 /**
  * @swagger
@@ -140,9 +144,6 @@ const router = Router()
  *       500:
  *         description: Internal server error
  */
-
-
-router.get("/" , isAuthed , authorize(["admin"]) , UserController.getUsers)
-router.delete("/:userId" , isAuthed , authorize(["admin"]) , UserController.deleteCustomer)
 router.put("/:userId" , validate(UpdateUserSchema), isAuthed , authorize(["admin" , "customer"]) , UserController.updateUser)
+
 export default router
